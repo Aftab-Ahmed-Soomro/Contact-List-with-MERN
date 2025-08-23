@@ -1,7 +1,22 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
+import axios from 'axios'
+import { NavLink, useNavigate } from 'react-router-dom'
 
 const Header = () => {
+  const navigate = useNavigate()
+
+  const handleLogout = async () => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/logout`, {withCredentials : true})
+
+      if (response.data.success) {
+        navigate("/")
+      } else {
+        alert("Cannot Logout")
+      }
+    } catch (error) {
+      alert("Server error", error)
+    }
+  }
   return (
     <header className="bg-white shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -49,6 +64,12 @@ const Header = () => {
             >
               Sign Up
             </NavLink>
+            <button
+              className="px-4 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700 transition cursor-pointer"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
           </div>
         </div>
       </div>
